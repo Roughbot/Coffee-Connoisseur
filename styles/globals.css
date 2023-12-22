@@ -22,3 +22,10 @@ a {
 * {
   box-sizing: border-box;
 }
+
+:root {
+  --text-purple: rgba(67, 56, 202, 1);
+  --text-purple-dark: rgb(30, 21, 190);
+  --text-black: rgba(17, 24, 39, 1);
+  --text-white-100: rgba(229, 231, 235, 1);
+}
