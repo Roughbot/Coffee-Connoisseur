@@ -19,15 +19,15 @@
 
 .title2 {
   display: block;
-  color: var(--text-purple);
+  color: var(--text-diffcolor);
 }
 
 .subTitle {
   margin-top: 0.75rem;
-  font-size: 1.5rem;
+  font-size: 2rem;
   line-height: 2rem;
-
-  color: var(--text-white-100);
+  font-weight: 600;
+  color: var(--text-diffcolor);
 }
 
 .buttonWrapper {
