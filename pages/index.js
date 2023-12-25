@@ -2,6 +2,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import Banner from "../components/banner";
+import Card from "../components/card";
 
 export default function Home() {
   const handleOnButtonClick = () => {
@@ -22,6 +23,23 @@ export default function Home() {
         />
         <div className={styles.heroImage}>
           <Image src="/staticc/hero-image.png" width={700} height={400} />
+        </div>
+        <div className={styles.cardLayout}>
+          <Card
+            name="Coffee house"
+            imgUrl="/staticc/pc.jpg"
+            href="/coffee-store/coffee-house"
+          />
+          <Card
+            name="Coffee house"
+            imgUrl="/staticc/hero-image.png"
+            href="/coffee-store/coffee-house"
+          />
+          <Card
+            name="Coffee house"
+            imgUrl="/staticc/background.png"
+            href="/coffee-store/coffee-house"
+          />
         </div>
       </main>
     </div>
