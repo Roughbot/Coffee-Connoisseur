@@ -19,7 +19,7 @@
 
 .cardLayout {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-columns: 1fr 1fr;
   column-gap: 2rem;
   row-gap: 1.5rem;
   justify-content: space-around;
