@@ -39,7 +39,10 @@ const CoffeeStore = (props) => {
     return <div>Loading....</div>;
   }
 
-  const { address, name, neighbourhood, imaUrl } = props.coffeeStore;
+  const { address, name, neighbourhood, imgUrl } = props.coffeeStore;
+  const handleUpvoteButton = () => {
+    console.log("upvpte");
+  };
 
   return (
     <div className={styles.layout}>
@@ -57,14 +60,35 @@ const CoffeeStore = (props) => {
           <Image
             className={styles.storeImg}
             alt={name}
-            src={imaUrl}
-            width={600}
-            height={360}
+            src={imgUrl}
+            width={300}
+            height={100}
           ></Image>
         </div>
         <div className={cls("glass", styles.col2)}>
-          <p>{address}</p>
-          <p>{neighbourhood}</p>
+          <div className={styles.iconWrapper}>
+            <Image
+              src="/staticc/icons/places.svg"
+              width={24}
+              height={24}
+            ></Image>
+            <p className={styles.texr}>{address}</p>
+          </div>
+          <div className={styles.iconWrapper}>
+            <Image
+              src="/staticc/icons/nearMe.svg"
+              width={24}
+              height={24}
+            ></Image>
+            <p className={styles.texr}>{neighbourhood}</p>
+          </div>
+          <div className={styles.iconWrapper}>
+            <Image src="/staticc/icons/star.svg" width={24} height={24}></Image>
+            <p className={styles.texr}>1</p>
+          </div>
+          <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
+            Up Vote!
+          </button>
         </div>
       </div>
     </div>
