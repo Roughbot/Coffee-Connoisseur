@@ -3,28 +3,13 @@ import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import Banner from "../components/banner";
 import Card from "../components/card";
-import coffeeStoresData from "../data/coffee-stores.json";
+import { fetchCoffeeStores } from "../lib/coffee-store";
 
 export async function getStaticProps(contex) {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: process.env.FOURSQUARE_API_KEY,
-    },
-  };
-
-  const response = await fetch(
-    "https://api.foursquare.com/v3/places/search?query=coffee&ll=11.9363763%2C79.7723281&limit=6",
-    options
-  );
-
-  const data = await response.json();
-  // .catch((err) => console.error(err));
-
+  const coffeeStores = await fetchCoffeeStores();
   return {
     props: {
-      coffeeStores: data.results,
+      coffeeStores,
     },
   };
 }
