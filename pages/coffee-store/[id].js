@@ -12,7 +12,7 @@ export async function getStaticProps(staticProps) {
   return {
     props: {
       coffeeStore: coffeeStores.find((coffeeStore) => {
-        return coffeeStore.fsq_id == params.id;
+        return coffeeStore.id == params.id;
       }),
     },
   };
@@ -23,7 +23,7 @@ export async function getStaticPaths() {
   const paths = coffeeStores.map((coffeeStore) => {
     return {
       params: {
-        id: coffeeStore.fsq_id.toString(),
+        id: coffeeStore.id.toString(),
       },
     };
   });
@@ -40,7 +40,7 @@ const CoffeeStore = (props) => {
     return <div>Loading....</div>;
   }
 
-  const { address, name, neighbourhood, imgUrl } = props.coffeeStore;
+  const { id, name, address, locality, imgUrl } = props.coffeeStore;
   const handleUpvoteButton = () => {
     console.log("upvpte");
   };
@@ -53,7 +53,7 @@ const CoffeeStore = (props) => {
       <div className={styles.container}>
         <div className={styles.col1}>
           <div className={styles.backToHomeLink}>
-            <Link href="/">Back To Home</Link>
+            <Link href="/">← Back To Home</Link>
           </div>
           <div className={styles.nameWrapper}>
             <h1 className={styles.name}>{name}</h1>
@@ -70,25 +70,30 @@ const CoffeeStore = (props) => {
           ></Image>
         </div>
         <div className={cls("glass", styles.col2)}>
-          <div className={styles.iconWrapper}>
-            <Image
-              src="/staticc/icons/places.svg"
-              width={24}
-              height={24}
-            ></Image>
-            <p className={styles.texr}>{address}</p>
-          </div>
-          <div className={styles.iconWrapper}>
-            <Image
-              src="/staticc/icons/nearMe.svg"
-              width={24}
-              height={24}
-            ></Image>
-            <p className={styles.texr}>{neighbourhood}</p>
-          </div>
+          {address && (
+            <div className={styles.iconWrapper}>
+              <Image
+                src="/staticc/icons/places.svg"
+                width={24}
+                height={24}
+              ></Image>
+              <p className={styles.text}>{address}</p>
+            </div>
+          )}
+
+          {locality && (
+            <div className={styles.iconWrapper}>
+              <Image
+                src="/staticc/icons/nearMe.svg"
+                width={24}
+                height={24}
+              ></Image>
+              <p className={styles.text}>{locality}</p>
+            </div>
+          )}
           <div className={styles.iconWrapper}>
             <Image src="/staticc/icons/star.svg" width={24} height={24}></Image>
-            <p className={styles.texr}>1</p>
+            <p className={styles.text}>1</p>
           </div>
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
             Up Vote!
