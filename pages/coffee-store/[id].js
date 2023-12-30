@@ -100,6 +100,7 @@ const CoffeeStore = (initialProps) => {
                 src="/staticc/icons/places.svg"
                 width={24}
                 height={24}
+                alt="places-image"
               ></Image>
               <p className={styles.text}>{address}</p>
             </div>
@@ -111,12 +112,18 @@ const CoffeeStore = (initialProps) => {
                 src="/staticc/icons/nearMe.svg"
                 width={24}
                 height={24}
+                alt="nearme-image"
               ></Image>
               <p className={styles.text}>{locality}</p>
             </div>
           )}
           <div className={styles.iconWrapper}>
-            <Image src="/staticc/icons/star.svg" width={24} height={24}></Image>
+            <Image
+              src="/staticc/icons/star.svg"
+              alt="star-image"
+              width={24}
+              height={24}
+            ></Image>
             <p className={styles.text}>1</p>
           </div>
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
