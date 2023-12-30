@@ -5,6 +5,9 @@ import Banner from "../components/banner";
 import Card from "../components/card";
 import { fetchCoffeeStores } from "../lib/coffee-store";
 import useTrackLocation from "../hooks/use-track-location";
+import { useEffect, useState, useContext } from "react";
+import { ACTION_TYPES } from "./_app";
+import { StoreContext } from "./_app";
 
 export async function getStaticProps(contex) {
   const coffeeStores = await fetchCoffeeStores();
@@ -16,9 +19,35 @@ export async function getStaticProps(contex) {
 }
 
 export default function Home(props) {
-  const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } =
+  const { handleTrackLocation, locationErrorMsg, isFindingLocation } =
     useTrackLocation();
-  console.log(latLong);
+
+  // const [coffeeStores, setCoffeeStores] = useState("");
+  const [coffeeStoresError, setCoffeeStoresError] = useState(null);
+
+  const { dispatch, state } = useContext(StoreContext);
+  const { coffeeStores, latLong } = state;
+
+  useEffect(() => {
+    const fetchStores = async () => {
+      if (latLong) {
+        try {
+          const fetchedCoffeeStore = await fetchCoffeeStores(latLong, 30);
+          // setCoffeeStores(fetchedCoffeeStore);
+          dispatch({
+            type: ACTION_TYPES.SET_COFFEE_STORES,
+            payload: {
+              coffeeStores: fetchedCoffeeStore,
+            },
+          });
+        } catch (error) {
+          console.log(error);
+          setCoffeeStoresError(error.message);
+        }
+      }
+    };
+    fetchStores();
+  }, [latLong]);
   const handleOnButtonClick = () => {
     console.log("button clicked");
     handleTrackLocation();
@@ -37,6 +66,7 @@ export default function Home(props) {
           handleOnClick={handleOnButtonClick}
         />
         {locationErrorMsg && <p>Something Went Wrong: {locationErrorMsg}</p>}
+        {coffeeStoresError && <p>Something Went Wrong: {coffeeStoresError}</p>}
         <div className={styles.heroImage}>
           <Image
             alt="hero-image"
@@ -45,6 +75,25 @@ export default function Home(props) {
             height={400}
           />
         </div>
+
+        {coffeeStores.length > 0 && (
+          <div className={styles.sectionWrapper}>
+            <h2 className={styles.heading2}>Stores Near Me...</h2>
+            <div className={styles.cardLayout}>
+              {coffeeStores.map((coffeeStore) => {
+                return (
+                  <Card
+                    key={coffeeStore.id}
+                    name={coffeeStore.name}
+                    imgUrl={coffeeStore.imgUrl}
+                    href={`/coffee-store/${coffeeStore.id}`}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {props.coffeeStores.length > 0 && (
           <div className={styles.sectionWrapper}>
             <h2 className={styles.heading2}>Pondicherry stores</h2>
