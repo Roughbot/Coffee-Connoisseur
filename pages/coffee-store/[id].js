@@ -41,10 +41,6 @@ export async function getStaticPaths() {
 const CoffeeStore = (initialProps) => {
   const Router = useRouter();
 
-  if (Router.isFallback) {
-    return <div>Loading....</div>;
-  }
-
   const id = Router.isFallback ? null : Router.query.id;
 
   const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
@@ -101,6 +97,9 @@ const CoffeeStore = (initialProps) => {
     }
   }, [data]);
 
+  if (Router.isFallback) {
+    return <div>Loading....</div>;
+  }
   const handleUpvoteButton = async () => {
     try {
       const response = await fetch("/api/favouriteCoffeeStoreById", {
