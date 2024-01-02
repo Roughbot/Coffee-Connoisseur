@@ -45,7 +45,7 @@ const CoffeeStore = (initialProps) => {
     return <div>Loading....</div>;
   }
 
-  const id = Router.query.id;
+  const id = Router.isFallback ? null : Router.query.id;
 
   const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
   const {
@@ -76,17 +76,17 @@ const CoffeeStore = (initialProps) => {
     }
   };
   useEffect(() => {
-    if (isEmpty(initialProps.coffeeStore)) {
-      if (coffeeStores.length > 0) {
-        const coffeeStoreFromContext = coffeeStores.find((coffeeStore) => {
-          return coffeeStore.id.toString() == id;
-        });
+    if (id && !isEmpty(initialProps.coffeeStore)) {
+      handleCreateCoffeeStore(initialProps.coffeeStore);
+    } else if (id && coffeeStores.length > 0) {
+      const coffeeStoreFromContext = coffeeStores.find((coffeeStore) => {
+        return coffeeStore.id.toString() == id;
+      });
 
+      if (coffeeStoreFromContext) {
         setCoffeeStore(coffeeStoreFromContext);
         handleCreateCoffeeStore(coffeeStoreFromContext);
       }
-    } else {
-      handleCreateCoffeeStore(initialProps.coffeeStore);
     }
   }, [id, initialProps.coffeeStore, coffeeStore]);
 
