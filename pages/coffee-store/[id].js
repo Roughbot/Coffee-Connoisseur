@@ -1,4 +1,4 @@
-import { useRouter } from "next/Router";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Head from "next/head";
 import styles from "../../styles/coffee-store.module.css";
