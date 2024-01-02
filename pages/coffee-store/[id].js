@@ -130,6 +130,7 @@ const CoffeeStore = (initialProps) => {
     <div className={styles.layout}>
       <Head>
         <title>{name}</title>
+        <link rel="icon" href="/favicon.ico" />
         <meta name="description" content={`${name} coffee store`} />
       </Head>
       <div className={styles.container}>
