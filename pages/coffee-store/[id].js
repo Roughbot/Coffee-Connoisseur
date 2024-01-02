@@ -96,7 +96,6 @@ const CoffeeStore = (initialProps) => {
   const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
   useEffect(() => {
     if (data && data.length > 0) {
-      console.log("datafrom sear", data);
       setCoffeeStore(data[0]);
       setVotingCount(data[0].votes);
     }
@@ -115,7 +114,6 @@ const CoffeeStore = (initialProps) => {
       });
 
       const dbCoffeeStore = response.json();
-      console.log(dbCoffeeStore);
       if (dbCoffeeStore && dbCoffeeStore.length > 0) {
         let count = votingCount + 1;
         setVotingCount(count);
