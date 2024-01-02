@@ -7,15 +7,14 @@ import cls from "classnames";
 import { fetchCoffeeStores } from "../../lib/coffee-store";
 import { useContext, useState, useEffect } from "react";
 import { StoreContext } from "../../store/store-context";
-import { isEmpty } from "../../utils";
+import { isEmpty, fetcher } from "../../utils";
 import useSWR from "swr";
 
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
-  console.log(params);
   const coffeeStores = await fetchCoffeeStores();
   const findCoffeeStoreById = coffeeStores.find((coffeeStore) => {
-    return coffeeStore.id == params.id;
+    return coffeeStore.id.toString() == params.id;
   });
   return {
     props: {
@@ -80,23 +79,21 @@ const CoffeeStore = (initialProps) => {
     if (isEmpty(initialProps.coffeeStore)) {
       if (coffeeStores.length > 0) {
         const coffeeStoreFromContext = coffeeStores.find((coffeeStore) => {
-          return coffeeStore.id == id;
+          return coffeeStore.id.toString() == id;
         });
-        if (coffeeStoreFromContext) {
-          setCoffeeStore(coffeeStoreFromContext);
-          handleCreateCoffeeStore(coffeeStoreFromContext);
-        }
+
+        setCoffeeStore(coffeeStoreFromContext);
+        handleCreateCoffeeStore(coffeeStoreFromContext);
       }
     } else {
       handleCreateCoffeeStore(initialProps.coffeeStore);
     }
-  }, [id, initialProps, initialProps.coffeeStore]);
+  }, [id, initialProps.coffeeStore, coffeeStore]);
 
   const { name, address, locality, imgUrl } = coffeeStore;
-  const [votingCount, setVotingCount] = useState(1);
-
-  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`);
-  console.log(data, error);
+  const [votingCount, setVotingCount] = useState(0);
+  const fetcher = (url) => fetch(url).then((res) => res.json());
+  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
   useEffect(() => {
     if (data && data.length > 0) {
       console.log("datafrom sear", data);
@@ -117,6 +114,7 @@ const CoffeeStore = (initialProps) => {
     <div className={styles.layout}>
       <Head>
         <title>{name}</title>
+        <meta name="description" content={`${name} coffee store`} />
       </Head>
       <div className={styles.container}>
         <div className={styles.col1}>
