@@ -8,6 +8,7 @@ import { fetchCoffeeStores } from "../../lib/coffee-store";
 import { useContext, useState, useEffect } from "react";
 import { StoreContext } from "../../store/store-context";
 import { isEmpty } from "../../utils";
+import useSWR from "swr";
 
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
@@ -71,7 +72,6 @@ const CoffeeStore = (initialProps) => {
       });
 
       const dbCoffeeStore = response.json();
-      console.log(dbCoffeeStore);
     } catch (error) {
       console.error("Error while creating coffeestore", error);
     }
@@ -93,9 +93,25 @@ const CoffeeStore = (initialProps) => {
   }, [id, initialProps, initialProps.coffeeStore]);
 
   const { name, address, locality, imgUrl } = coffeeStore;
+  const [votingCount, setVotingCount] = useState(1);
+
+  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`);
+  console.log(data, error);
+  useEffect(() => {
+    if (data && data.length > 0) {
+      console.log("datafrom sear", data);
+      setCoffeeStore(data[0]);
+      setVotingCount(data[0].votes);
+    }
+  }, [data]);
+
   const handleUpvoteButton = () => {
-    console.log("upvpte");
+    let count = votingCount + 1;
+    setVotingCount(count);
   };
+  if (error) {
+    return <div>Something went wrong while retrieving the data</div>;
+  }
 
   return (
     <div className={styles.layout}>
@@ -152,7 +168,7 @@ const CoffeeStore = (initialProps) => {
               width={24}
               height={24}
             ></Image>
-            <p className={styles.text}>1</p>
+            <p className={styles.text}>{votingCount}</p>
           </div>
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
             Up Vote!
